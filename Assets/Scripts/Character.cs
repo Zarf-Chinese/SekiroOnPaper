@@ -153,8 +153,11 @@ public class Character : MonoBehaviour
     public InputAction action_idle = new InputAction("调…息…片…刻", 0, InputState.Idle, "idle");
     public InputAction action_block = new InputAction("持剑…格挡！", 1.5f, InputState.Block, "block");
     public InputAction action_jump = new InputAction("下…蹲……跳起！", 2f, InputState.Jump, "jump");
-    public InputAction action_dodge = new InputAction("抬脚…碎步！", 1.5f, InputState.Dodge, "dodge");
+    public InputAction action_dodge = new InputAction("抬脚…闪避！", 1.5f, InputState.Dodge, "dodge");
+    public InputAction action_blocked = new InputAction("格挡成功！", 0.5f, InputState.Idle, "blocked");
+    public InputAction action_attacked = new InputAction("咳，被击中……", 1.75f, InputState.Idle, "attacked");
     public AttackData curAttackData;
+    public Character curTarget;
     #endregion
     /// <summary>
     /// 通过actionKey寻找对应的InputAction。可能返回null
@@ -172,9 +175,15 @@ public class Character : MonoBehaviour
     /// <summary>
     /// 进行攻击判定
     /// </summary>
-    public AttackResult TestAttack(Character attacked, AttackData attackData = null)
+    public AttackResult TestAttack(Character attacked = null, AttackData attackData = null)
     {
         if (attackData == null) attackData = curAttackData;
+        if (attacked == null) attacked = curTarget;
+        if (attackData == null || attacked == null)
+        {
+            //没有攻击目标（没有攻击内容，或者目标不存在）
+            return AttackResult.NoTarget;
+        }
         if (GetDistance(attacked, curAttackData.coeRadius) < 0)
         {
             //距离过远，没有命中

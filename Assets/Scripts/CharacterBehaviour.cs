@@ -9,7 +9,7 @@ public class CharacterBehaviour : MonoBehaviour
     public Reporter reporter;
     public AttackDatas attackDatas;
     public string curActionKey;
-    public bool isRunning => this._curRunningTime >= this._runningTime;
+    public bool isRunning => this._curRunningTime < this._runningTime;
     private float _runningTime;
     private float _curRunningTime;
     // Start is called before the first frame update
@@ -39,6 +39,12 @@ public class CharacterBehaviour : MonoBehaviour
             //todo: 执行attack
             Debug.Log("Attack: " + attackKey);
             animator.SetTrigger("attack");
+            character.curTarget = attacked;
+            character.curAttackData = attackData;
+            reporter.DoAction(action.content);
+            _runningTime = action.duration;
+            _curRunningTime = 0;
+            curActionKey = attackKey;
 
             return true;
         }
@@ -69,9 +75,21 @@ public class CharacterBehaviour : MonoBehaviour
     public virtual bool Jump() { return false; }
     public virtual bool Crack() { return false; }
     public virtual bool Dodge() { return false; }
+    public void DoAttack(AttackResult result)
+    {
+        Debug.Log("test attack result: " + result.ToString());
+        //执行attack 逻辑
+    }
 
     // Update is called once per frame
     void Update()
+    {
+        if (character.isAttacking)
+        {
+            DoAttack(character.TestAttack());
+        }
+    }
+    void LateUpdate()
     {
         _curRunningTime += Time.deltaTime;
     }

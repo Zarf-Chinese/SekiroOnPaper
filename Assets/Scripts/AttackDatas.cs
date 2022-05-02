@@ -68,7 +68,8 @@ public enum AttackResult
     Missed,
     Blocked,
     Cracked,
-    Hitted
+    Hitted,
+    NoTarget
 }
 [CreateAssetMenu(menuName = "Data/AttackDatas")]
 
