@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7797063869247004804}
   - component: {fileID: 1278169275582888310}
+  - component: {fileID: 4531922944934730298}
   m_Layer: 0
   m_Name: Mob
   m_TagString: Untagged
@@ -43,3 +44,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a62dc898287cb7642960312a22ae2cee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHp: 100
+  maxSp: 100
+  hp: 100
+  sp: 100
+  position: {x: 0, y: 0}
+  block: 0
+  dodge: 0
+  jump: 0
+  crack: 0
+  forward: {x: 0, y: 1}
+  speed: 0
+  radius: 1
+  inputState: 0
+  isBreakable: 1
+  isHurtable: 1
+  coeSp: 1
+--- !u!95 &4531922944934730298
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 654407608132232854}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fc62316966bc37f4a8fa4c40d107e030, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

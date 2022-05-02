@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18fc6da6a4f060a43be213ef4654fea5, type: 3}
+  m_Name: AttackDatas
+  m_EditorClassIdentifier: 
+  datas:
+  - name: "\u666E\u901A\u5411\u524D\u65A9\u51FB"
+    blockIgnore: 0.1
+    jumpIgnore: 1
+    crackIgnore: 0.1
+    dodgeIgnore: 0.1
+    coeRadius: 1
+    hpDamage: 10
+    spDamage: 10
+    coeSpBlocked: 1
+    coeSpDodged: 0
+    spCost: 5
+  - name: "\u84C4\u529B\u5411\u524D\u65A9\u51FB"
+    blockIgnore: 0.2
+    jumpIgnore: 1
+    crackIgnore: 0.3
+    dodgeIgnore: 0.1
+    coeRadius: 1
+    hpDamage: 20
+    spDamage: 20
+    coeSpBlocked: 2
+    coeSpDodged: 0
+    spCost: 10
+  - name: "\u666E\u901A\u5411\u524D\u7A81\u523A"
+    blockIgnore: 0.6
+    jumpIgnore: 1
+    crackIgnore: 0.3
+    dodgeIgnore: 0.1
+    coeRadius: 1
+    hpDamage: 30
+    spDamage: 30
+    coeSpBlocked: 1
+    coeSpDodged: 5
+    spCost: 10
