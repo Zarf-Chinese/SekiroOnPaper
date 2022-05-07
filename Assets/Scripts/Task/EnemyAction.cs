@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SOP;
 namespace BehaviorDesigner.Runtime.Tasks.SOP
 {
     [TaskCategory("SOP")]
     [TaskDescription("敌人-立即执行某个动作，若未能执行或被打断，则返回false。")]
     public class EnemyAction : Action
     {
-        public GameObject enemy;
-        CharacterBehaviour enemyBehaviour;
+        public GameObject target;
+        CharacterBehaviour targetBehaviour;
         CharacterBehaviour selfBehvaiour;
         bool isTriggered = false;
         public string actionKey;
@@ -16,11 +17,11 @@ namespace BehaviorDesigner.Runtime.Tasks.SOP
         public override void OnStart()
         {
             base.OnStart();
-            if (!this.enemy)
+            if (!this.target)
             {
-                this.enemy = (GameObject)GlobalVariables.Instance.GetVariable("hero").GetValue();
+                this.target = (GameObject)GlobalVariables.Instance.GetVariable("hero").GetValue();
             }
-            enemyBehaviour = this.enemy.GetComponent<CharacterBehaviour>();
+            targetBehaviour = this.target.GetComponent<CharacterBehaviour>();
             selfBehvaiour = this.GetComponent<CharacterBehaviour>();
             bool result = false;
             switch (actionKey)
@@ -29,12 +30,12 @@ namespace BehaviorDesigner.Runtime.Tasks.SOP
                     result = this.selfBehvaiour.Block();
                     break;
                 default:
-                    result = this.selfBehvaiour.Attack(enemyBehaviour.character, actionKey);
+                    result = this.selfBehvaiour.Attack(targetBehaviour.character, actionKey);
                     break;
             }
             if (!result)
             {
-                Debug.Log("行动失败：" + enemy.name + " :" + actionKey);
+                Debug.Log("行动失败：" + selfBehvaiour.name + " :" + actionKey);
                 isTriggered = false;
                 return;
             }
@@ -45,11 +46,11 @@ namespace BehaviorDesigner.Runtime.Tasks.SOP
         public override TaskStatus OnUpdate()
         {
             base.OnUpdate();
-            if (this.enemyBehaviour.curActionKey == actionKey || !isTriggered)
+            if (this.targetBehaviour.curActionKey == actionKey || !isTriggered)
             {
                 return TaskStatus.Failure;
             }
-            if (this.enemyBehaviour.isRunning)
+            if (this.targetBehaviour.isRunning)
             {
                 return TaskStatus.Running;
             }
@@ -58,4 +59,3 @@ namespace BehaviorDesigner.Runtime.Tasks.SOP
         }
     }
 }
-
