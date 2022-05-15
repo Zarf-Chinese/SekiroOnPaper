@@ -17,7 +17,7 @@ namespace SOP
     public class HeroController : MonoBehaviour
     {
         public CharacterBehaviour heroBehaviour;
-        public Character enemy;
+        public CharacterBehaviour enemyBehviour;
         public string attackKey1;
         public string attackKey2;
         SOPControls controls;
@@ -36,11 +36,11 @@ namespace SOP
         {
             if (context.interaction is SlowTapInteraction)
             {
-                heroBehaviour.Attack(enemy, attackKey2);
+                heroBehaviour.Attack(enemyBehviour, attackKey2);
             }
             else
             {
-                heroBehaviour.Attack(enemy, attackKey1);
+                heroBehaviour.Attack(enemyBehviour, attackKey1);
             }
         }
         public void OnEnable()

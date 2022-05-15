@@ -118,6 +118,10 @@ namespace SOP
         /// </summary>
         public Vector2 forward = Vector2.zero;
         /// <summary>
+        /// 位置临时突变
+        /// </summary>
+        public Vector2 deltaPos;
+        /// <summary>
         /// 移动速度
         /// </summary>
         public float speed = 0;
@@ -149,6 +153,10 @@ namespace SOP
         /// 是否正在进行伤害判断
         /// </summary>
         public bool isAttacking;
+        /// <summary>
+        /// 是否正处于攻击动作
+        /// </summary>
+        public bool isInAttackAction;
         #endregion
 
         #region 行动内容
@@ -157,10 +165,9 @@ namespace SOP
         public ActionReport action_block = new ActionReport("持剑…格挡！", 1.5f, InputState.Block, "block");
         public ActionReport action_jump = new ActionReport("下…蹲……跳起！", 2f, InputState.Jump, "jump");
         public ActionReport action_dodge = new ActionReport("抬脚…闪避！", 1.5f, InputState.Dodge, "dodge");
-        public ActionReport action_blocked = new ActionReport("格挡成功！", 0.5f, InputState.Idle, "blocked");
-        public ActionReport action_attacked = new ActionReport("咳，被击中……", 1.75f, InputState.Idle, "attacked");
-        public AttackData curAttackData;
-        public Character curTarget;
+        public ActionReport action_blocked = new ActionReport("咳……被格挡！", 0.5f, InputState.Idle, "blocked");
+        public ActionReport action_attacked = new ActionReport("踉跄……被击中！", 1.75f, InputState.Idle, "attacked");
+        public ActionReport action_blkSuc = new ActionReport("格挡成功！", 0f, InputState.Idle, "blockSucceed");
         #endregion
         /// <summary>
         /// 通过actionKey寻找对应的InputAction。可能返回null
@@ -173,21 +180,23 @@ namespace SOP
             if (actionKey == "block") return action_block;
             if (actionKey == "jump") return action_jump;
             if (actionKey == "dodge") return action_dodge;
+            if (actionKey == "attacked") return action_attacked;
+            if (actionKey == "blocked") return action_blocked;
+            if (actionKey == "blockSucceed") return action_blkSuc;
             return action_attacks.Find((ActionReport a) => a.keyName == actionKey);
         }
         /// <summary>
         /// 进行攻击判定
         /// </summary>
-        public AttackResult TestAttack(Character attacked = null, AttackData attackData = null)
+        public AttackResult TestAttack(Character attacked, AttackData attackData)
         {
-            if (attackData == null) attackData = curAttackData;
-            if (attacked == null) attacked = curTarget;
             if (attackData == null || attacked == null)
             {
                 //没有攻击目标（没有攻击内容，或者目标不存在）
                 return AttackResult.NoTarget;
             }
-            if (GetDistance(attacked, curAttackData.coeRadius) < 0)
+            var distance = GetDistance(attacked, attackData.coeRadius);
+            if (distance > 0)
             {
                 //距离过远，没有命中
                 return AttackResult.Missed;
@@ -216,6 +225,14 @@ namespace SOP
         }
 
 
+        public void InvokeAttack()
+        {
+            this.isAttacking = true;
+        }
+        public void EndAttack()
+        {
+            this.isAttacking = false;
+        }
         public float GetDistance(Character other, float attackCoeRadius = 1)
         {
             return Vector2.Distance(this.position, other.position) - attackCoeRadius * this.radius - other.radius;

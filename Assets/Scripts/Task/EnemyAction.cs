@@ -5,7 +5,7 @@ using SOP;
 namespace BehaviorDesigner.Runtime.Tasks.SOP
 {
     [TaskCategory("SOP")]
-    [TaskDescription("敌人-立即执行某个动作，若未能执行或被打断，则返回false。")]
+    [TaskDescription("对目标敌人-立即执行某个动作，若未能执行或被打断，则返回false。")]
     public class EnemyAction : Action
     {
         public GameObject target;
@@ -30,7 +30,7 @@ namespace BehaviorDesigner.Runtime.Tasks.SOP
                     result = this.selfBehvaiour.Block();
                     break;
                 default:
-                    result = this.selfBehvaiour.Attack(targetBehaviour.character, actionKey);
+                    result = this.selfBehvaiour.Attack(targetBehaviour, actionKey);
                     break;
             }
             if (!result)
@@ -46,11 +46,11 @@ namespace BehaviorDesigner.Runtime.Tasks.SOP
         public override TaskStatus OnUpdate()
         {
             base.OnUpdate();
-            if (this.targetBehaviour.curActionKey == actionKey || !isTriggered)
+            if (this.selfBehvaiour.curActionKey != actionKey || !isTriggered)
             {
                 return TaskStatus.Failure;
             }
-            if (this.targetBehaviour.isRunning)
+            if (this.selfBehvaiour.isRunning)
             {
                 return TaskStatus.Running;
             }
